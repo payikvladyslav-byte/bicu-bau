@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de-CH">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 <meta name="description" content="Komplette Badrenovierung in Reinach BL und der Region Basel. Planung, Trockenbau, Plattenlegen, Duschen und Glaswände aus einer Hand – zum Fixpreis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,500&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#121212; --bg2:#181817; --ink:#ece8e1; --mute:#9b968c; --line:rgba(236,232,225,.12);
@@ -20,14 +20,14 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:300 17px/1.7 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font:300 17px/1.7 Barlow,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
-.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:-.01em;line-height:1.05}
+.serif{font-family:"Barlow Condensed",Impact,sans-serif;font-weight:600;letter-spacing:.005em;line-height:1.05}
 .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);font-weight:500}
 .eyebrow b{color:var(--gold);font-weight:500}
-h2.serif{font-size:clamp(36px,5vw,64px)}
+h2.serif{font-size:clamp(40px,5.6vw,72px)}
 em{font-style:italic;color:#d8d2c6}
 
 .btn{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:#111;font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:19px 30px;border-radius:2px;transition:background .25s,transform .25s;border:0;cursor:pointer;font-family:inherit}
@@ -41,11 +41,11 @@ em{font-style:italic;color:#d8d2c6}
 header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
 header.solid{background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-color:var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:84px}
-.logo{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:500;letter-spacing:.02em}
+.logo{font-family:"Barlow Condensed",sans-serif;font-size:30px;font-weight:600;letter-spacing:.02em}
 .logo{display:inline-flex;align-items:center;gap:14px}
 .logo img{height:46px;width:auto}
-.logo .lt{font:600 19px/1 Inter,sans-serif;letter-spacing:.2em;color:var(--ink)}
-.logo small{display:block;margin-top:6px;font:400 10px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+.logo .lt{font:600 19px/1 Barlow,sans-serif;letter-spacing:.2em;color:var(--ink)}
+.logo small{display:block;margin-top:6px;font:400 10px/1 Barlow,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
 @media(max-width:960px){.logo img{height:38px}.logo .lt{font-size:16px}}
 .nav nav{display:flex;gap:36px}
 .nav nav a{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);transition:color .2s}
@@ -60,7 +60,7 @@ header.solid{background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-col
 .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 .mnav{position:fixed;inset:70px 0 0 0;z-index:49;background:rgba(18,18,18,.985);padding:18px 24px 90px;display:none;flex-direction:column;overflow-y:auto}
 .mnav.open{display:flex}
-.mnav a:not(.btn){font:500 30px/1.2 "Cormorant Garamond",serif;padding:20px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.mnav a:not(.btn){font:600 34px/1.2 "Barlow Condensed",sans-serif;padding:20px 0;border-bottom:1px solid var(--line);color:var(--ink)}
 .mnav a:not(.btn):active{color:var(--gold)}
 .mnav .m-cta{margin-top:30px;justify-content:center}
 .menu-open .mcta{display:none!important}
@@ -69,7 +69,7 @@ header.solid{background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-col
 .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;background:var(--img-hero) 70% center/cover;padding-bottom:9vh}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,18,18,.9) 0%,rgba(18,18,18,.6) 38%,rgba(18,18,18,0) 68%),linear-gradient(0deg,#121212 0%,transparent 30%)}
 .hero .wrap{position:relative;width:100%}
-.hero h1{font-size:clamp(46px,6.2vw,96px);max-width:8.6em;margin:26px 0 30px}
+.hero h1{font-size:clamp(52px,7vw,110px);max-width:8.6em;margin:26px 0 30px}
 .hero p.lead{max-width:30em;font-size:19px;color:#cfc9bd}
 .hero .row{display:flex;flex-wrap:wrap;align-items:center;gap:34px;margin-top:44px}
 .scroll-hint{position:absolute;right:28px;bottom:9vh;writing-mode:vertical-rl;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
@@ -79,7 +79,7 @@ header.solid{background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-col
 .facts .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
 .facts .wrap>div{padding:38px 28px 38px 0;border-right:1px solid var(--line);margin-right:28px}
 .facts .wrap>div:last-child{border:0}
-.facts strong{display:block;font:500 28px/1.1 "Cormorant Garamond",serif;margin-bottom:8px}
+.facts strong{display:block;font:600 32px/1.1 "Barlow Condensed",sans-serif;margin-bottom:8px}
 .facts span{font-size:14px;color:var(--mute)}
 
 section{padding:140px 0}
@@ -99,13 +99,13 @@ section{padding:140px 0}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
 .step{padding:34px 30px 10px 0;position:relative}
 .step::before{content:"";position:absolute;top:-1px;left:0;width:36px;height:1px;background:var(--gold)}
-.step .n{font:italic 400 64px/1 "Cormorant Garamond",serif;color:#5d5a53;margin-bottom:22px}
-.step h3{font:500 25px/1.2 "Cormorant Garamond",serif;margin-bottom:12px}
+.step .n{font:italic 600 64px/1 "Barlow Condensed",sans-serif;color:#5d5a53;margin-bottom:22px}
+.step h3{font:600 29px/1.2 "Barlow Condensed",sans-serif;margin-bottom:12px}
 .step p{font-size:15px;color:var(--mute)}
 
 /* before after */
 .ref-grid{display:grid;grid-template-columns:7fr 5fr;gap:70px;align-items:center}
-.ref-text h3{font:500 34px/1.15 "Cormorant Garamond",serif;margin:0 0 16px}
+.ref-text h3{font:600 40px/1.15 "Barlow Condensed",sans-serif;margin:0 0 16px}
 .ref-text p{color:var(--mute);margin-bottom:26px;max-width:28em}
 .ba{position:relative;aspect-ratio:1/1;overflow:hidden;background:#1d1d1c;user-select:none;border-radius:2px;--p:50%;width:100%;max-width:620px}
 .ba .l{position:absolute;inset:0;background-size:cover;background-position:center}
@@ -141,7 +141,7 @@ section{padding:140px 0}
 .svc a{display:block}
 .svc .ph{aspect-ratio:3/4;background-size:cover;background-position:center;margin-bottom:26px;filter:saturate(.85);transition:filter .4s,transform .6s;overflow:hidden}
 .svc a:hover .ph{filter:saturate(1.05)}
-.svc h3{font:500 32px/1.1 "Cormorant Garamond",serif;margin-bottom:12px}
+.svc h3{font:600 37px/1.1 "Barlow Condensed",sans-serif;margin-bottom:12px}
 .svc p{color:var(--mute);font-size:15px;max-width:24em}
 
 /* configurator */
@@ -153,7 +153,7 @@ section{padding:140px 0}
 .prog{display:flex;gap:6px;margin-bottom:34px}
 .prog i{flex:1;height:2px;background:var(--line);transition:background .3s}
 .prog i.on{background:var(--gold)}
-.q{font:500 32px/1.15 "Cormorant Garamond",serif;margin-bottom:26px}
+.q{font:600 38px/1.15 "Barlow Condensed",sans-serif;margin-bottom:26px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .opt{text-align:left;background:transparent;border:1px solid var(--line);color:var(--ink);padding:22px 22px;cursor:pointer;font:inherit;transition:border-color .2s,background .2s}
 .opt:hover{border-color:rgba(236,232,225,.5)}
@@ -169,7 +169,7 @@ section{padding:140px 0}
 .check{display:flex;gap:12px;align-items:flex-start;margin:26px 0;font-size:13px;color:var(--mute);line-height:1.55}
 .check input{margin-top:3px;accent-color:#F5C518}
 .err{color:#e58b7a;font-size:14px;margin-bottom:14px;display:none}
-.result .price{font:500 clamp(40px,5vw,60px)/1.05 "Cormorant Garamond",serif;color:var(--gold);margin:12px 0 10px}
+.result .price{font:600 clamp(40px,5vw,60px)/1.05 "Barlow Condensed",sans-serif;color:var(--gold);margin:12px 0 10px}
 .result .sum{font-size:14px;color:var(--mute)}
 .result .box{border-top:1px solid var(--line);margin-top:28px;padding-top:22px;font-size:14px;color:var(--mute)}
 [hidden]{display:none!important}
@@ -192,9 +192,9 @@ section{padding:140px 0}
 .faq{max-width:860px;margin:0 auto}
 details{border-top:1px solid var(--line)}
 details:last-child{border-bottom:1px solid var(--line)}
-summary{list-style:none;cursor:pointer;padding:28px 0;display:flex;justify-content:space-between;gap:30px;font:500 26px/1.2 "Cormorant Garamond",serif}
+summary{list-style:none;cursor:pointer;padding:28px 0;display:flex;justify-content:space-between;gap:30px;font:600 30px/1.2 "Barlow Condensed",sans-serif}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font:300 28px/1 Inter;color:var(--gold);transition:transform .3s}
+summary::after{content:"+";font:300 28px/1 Barlow;color:var(--gold);transition:transform .3s}
 details[open] summary::after{transform:rotate(45deg)}
 details p{padding:0 60px 30px 0;color:var(--mute)}
 
@@ -202,7 +202,7 @@ details p{padding:0 60px 30px 0;color:var(--mute)}
 .final{position:relative;text-align:center;background:var(--img-dark) center/cover;padding:180px 0}
 .final::before{content:"";position:absolute;inset:0;background:rgba(18,18,18,.82)}
 .final .wrap{position:relative}
-.final h2{font-size:clamp(44px,7vw,100px);max-width:11em;margin:24px auto 28px}
+.final h2{font-size:clamp(48px,7.6vw,112px);max-width:11em;margin:24px auto 28px}
 .final p{color:#c4beb2;max-width:30em;margin:0 auto 44px}
 .final .row{display:flex;gap:30px;justify-content:center;align-items:center;flex-wrap:wrap}
 footer{padding:60px 0;border-top:1px solid var(--line)}
