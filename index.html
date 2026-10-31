@@ -132,7 +132,11 @@ section{padding:140px 0}
 .ref-grid.rev .ba{order:2;margin-left:auto}
 .ba .t1{left:22px}.ba .t2{right:22px}
 .ba .bar{position:absolute;top:0;bottom:0;left:var(--p);width:1px;background:var(--ink);pointer-events:none}
-.ba .bar::after{content:"";position:absolute;top:50%;left:50%;width:54px;height:54px;transform:translate(-50%,-50%);border:1px solid var(--ink);border-radius:50%;background:rgba(18,18,18,.55);backdrop-filter:blur(6px)}
+.ba .bar::after{content:"";position:absolute;top:50%;left:50%;width:54px;height:54px;transform:translate(-50%,-50%);border:2px solid var(--gold);border-radius:50%;background:rgba(18,18,18,.55);backdrop-filter:blur(6px);box-shadow:0 0 6px rgba(245,197,24,.9),0 0 18px rgba(245,197,24,.55),inset 0 0 10px rgba(245,197,24,.4);animation:neonpulse 2.4s ease-in-out infinite}
+em.neon{font-style:italic;color:var(--gold);text-shadow:0 0 6px rgba(245,197,24,.85),0 0 18px rgba(245,197,24,.5);animation:neontext 2.4s ease-in-out infinite}
+@keyframes neonpulse{50%{box-shadow:0 0 3px rgba(245,197,24,.6),0 0 10px rgba(245,197,24,.3),inset 0 0 5px rgba(245,197,24,.25)}}
+@keyframes neontext{50%{text-shadow:0 0 3px rgba(245,197,24,.6),0 0 9px rgba(245,197,24,.3)}}
+@media (prefers-reduced-motion:reduce){.ba .bar::after,em.neon{animation:none}}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;touch-action:pan-y}
 .note{margin-top:18px;font-size:13px;color:var(--mute)}
 
@@ -364,7 +368,7 @@ footer a:hover{color:var(--ink)}
         <p class="eyebrow"><b>03</b> &nbsp;Referenzen</p>
         <h2 class="serif" style="margin-top:22px">Der Unterschied ist <em>sichtbar.</em></h2>
       </div>
-      <p>Ziehen Sie den Regler und blättern Sie durch unsere Beispiele: So wird aus einem in die Jahre gekommenen Bad ein Raum zum Wohlfühlen.</p>
+      <p>Ziehen Sie den <em class="neon">Regler</em> und blättern Sie durch unsere Beispiele: So wird aus einem in die Jahre gekommenen Bad ein Raum zum Wohlfühlen.</p>
     </div>
     <div class="carousel rv" id="car" role="region" aria-roledescription="Karussell" aria-label="Vorher-Nachher-Beispiele">
       <div class="car-viewport"><div class="car-track">
