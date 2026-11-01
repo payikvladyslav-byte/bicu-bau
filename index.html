@@ -732,15 +732,151 @@ document.querySelectorAll('.ba').forEach(ba => ba.querySelector('input').addEven
     function loop(t){raf=0;if(!vis)return;frame(t);raf=requestAnimationFrame(loop);}
     new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis&&!raf)raf=requestAnimationFrame(loop);}).observe(box);
     api={update(){chipsUpdate();build();pop=1;dirty=true;if(vis&&!raf)raf=requestAnimationFrame(loop);}};
+    window.__bad3d.snap=function(views){
+      const W2=1400,H2=900,keep=[renderer.getSize(new T.Vector2()),cam.aspect];
+      renderer.setPixelRatio(1);renderer.setSize(W2,H2,false);cam.aspect=W2/H2;cam.updateProjectionMatrix();
+      const out=views.map(v=>{
+        const yw=yaw+v.yaw,pt=pitch+(v.pitch||0);
+        cam.position.set(target.x+Math.sin(yw)*Math.cos(pt)*dist,target.y+Math.sin(pt)*dist,target.z+Math.cos(yw)*Math.cos(pt)*dist);
+        cam.lookAt(target);renderer.render(scene,cam);
+        const c=document.createElement('canvas');c.width=W2;c.height=H2;const g=c.getContext('2d');
+        g.fillStyle='#1b1a18';g.fillRect(0,0,W2,H2);g.drawImage(cv,0,0,W2,H2);
+        return c.toDataURL('image/jpeg',.9);
+      });
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(keep[0].x,keep[0].y,false);cam.aspect=keep[1];cam.updateProjectionMatrix();dirty=true;
+      return out;
+    };
     build();chipsUpdate();
   }
 })();
 /* Konfigurator */
 const CONFIG = {
-  endpoint: '',                 // z. B. Formspree / Web3Forms. Leer = Fallback per E-Mail-Programm
+  endpoint: 'https://script.google.com/macros/s/AKfycbxZA8v0Srn_h89E8l_yOGsa7UfNmMRWwkNyUnOioUiVa5i1HPR_OZyggyI0Xva5-gxF/exec',                 // z. B. Formspree / Web3Forms. Leer = Fallback per E-Mail-Programm
   mailTo: 'info@bicubau.ch'
 };
 const state = {};
+
+/* Link zur 3D-Ansicht mit gespeicherter Konfiguration */
+function deepLink(){
+  return location.origin + location.pathname + '#bad=' + [state.size.v,state.shower.v,state.tile.v].join('');
+}
+
+/* PDF-Konfigurationsblatt */
+const BAD_TXT = {
+  size:['Kompakt (bis 4 m²)','Standard (4–7 m²)','Grosszügig (7–10 m²)','Wellness (über 10 m²)'],
+  shower:['Duschwanne mit Glastür – klassisch und bewährt','Walk-in-Dusche mit Glaswand – offen und modern','Bodenebene Dusche – barrierefrei, massgefertigt','Badewanne und Dusche – beides in einem Bad'],
+  tile:['Feinsteinzeug – zeitlos und pflegeleicht','Grossformat-Platten – wenige Fugen, ruhige Flächen','Naturstein-Optik – Premium-Anmutung','Mosaik und Akzente – individuell gestaltet']
+};
+function loadScript(src){return new Promise((ok,no)=>{if(window.jspdf)return ok();const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s);});}
+function loadImg(src){return new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>ok(null);i.src=src;});}
+async function shrink(src,maxW,q,png){const i=await loadImg(src);if(!i)return null;const s=Math.min(1,maxW/i.naturalWidth),w=Math.round(i.naturalWidth*s),h=Math.round(i.naturalHeight*s),c=document.createElement("canvas");c.width=w;c.height=h;const g=c.getContext("2d");if(!png){g.fillStyle="#fff";g.fillRect(0,0,w,h);}g.drawImage(i,0,0,w,h);return {url:c.toDataURL(png?"image/png":"image/jpeg",q),w,h};}
+async function buildPdf(p){
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  const {jsPDF}=window.jspdf, d=new jsPDF({unit:'mm',format:'a4'});
+  const PW=210, M=18, gold=[245,197,24], ink=[24,24,24], mute=[110,108,102];
+  const now=new Date(), ds=now.toLocaleDateString('de-CH');
+  const ref='BK-'+String(now.getFullYear()).slice(2)+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  // Kopfzeile
+  d.setFillColor(...ink); d.rect(0,0,PW,36,'F');
+  const logo=document.querySelector('.logo img');
+  const lean=!!window.__PDFLEAN, mw=lean?420:1000, jq=lean?.4:.78;
+  const L=(logo&&logo.src)?await shrink(logo.src,lean?48:140,1,true):null;
+  if(L) try{d.addImage(L.url,"PNG",M,7,22,22);}catch(_){}
+  d.setTextColor(255,255,255); d.setFont('helvetica','bold'); d.setFontSize(17); d.text('DIN SANITÄRPARTNER',M+27,17);
+  d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(190,188,180); d.text('UMBAUTEN · RENOVATIONEN',M+27,23);
+  d.setFontSize(8.5); d.text(['Schönmattstrasse 21 · 4153 Reinach BL','+41 00 000 00 00 · '+CONFIG.mailTo],PW-M,14,{align:'right'});
+  d.setFillColor(...gold); d.rect(0,36,PW,1.6,'F');
+  // Titel
+  d.setTextColor(...ink); d.setFont('helvetica','bold'); d.setFontSize(21); d.text('Ihre Badkonfiguration',M,54);
+  d.setFont('helvetica','normal'); d.setFontSize(9.5); d.setTextColor(...mute);
+  d.text('Referenz '+ref+'  ·  '+ds,M,60);
+  // Kundendaten
+  let y=72; d.setDrawColor(225,223,216); d.line(M,y-6,PW-M,y-6);
+  const row=(a,b)=>{d.setFont('helvetica','bold');d.setFontSize(9);d.setTextColor(...mute);d.text(a.toUpperCase(),M,y);d.setFont('helvetica','normal');d.setFontSize(11);d.setTextColor(...ink);d.text(String(b||'–'),M+42,y);y+=7.5;};
+  row('Name',p.name); row('Telefon',p.phone); row('E-Mail',p.email); row('PLZ / Ort',p.plz);
+  d.line(M,y-3,PW-M,y-3); y+=6;
+  // Wünsche
+  d.setFont('helvetica','bold'); d.setFontSize(12); d.setTextColor(...ink); d.text('Ihre Auswahl',M,y); y+=8;
+  [['Badgrösse',BAD_TXT.size[state.size.v]],['Dusche',BAD_TXT.shower[state.shower.v]],['Platten',BAD_TXT.tile[state.tile.v]]].forEach(([a,b])=>{
+    d.setFillColor(...gold); d.rect(M,y-3.6,1.6,5.4,'F');
+    d.setFont('helvetica','bold');d.setFontSize(9);d.setTextColor(...mute);d.text(a.toUpperCase(),M+5,y);
+    d.setFont('helvetica','normal');d.setFontSize(11);d.setTextColor(...ink);d.text(d.splitTextToSize(b,PW-2*M-42),M+42,y); y+=9;
+  });
+  y+=3;
+  // Hauptbild: fotorealistische Visualisierung, falls vorhanden, sonst 3D-Ansicht
+  const k=''+state.size.v+state.shower.v+state.tile.v;
+  const rk=state.shower.v+''+state.tile.v;
+  const [real,real2]=await Promise.all([shrink('bilder/real/'+rk+'.jpg',mw,jq),shrink('bilder/real/'+rk+'b.jpg',mw,jq)]);
+  let shots=(window.__bad3d&&window.__bad3d.snap)?window.__bad3d.snap([{yaw:-.35},{yaw:.55,pitch:-.1}]):null;
+  if(shots) shots=(await Promise.all(shots.map(s=>shrink(s,lean?340:900,jq)))).map(s=>s.url);
+  const IW=PW-2*M;
+  const foot=()=>{
+    d.setDrawColor(225,223,216); d.line(M,284,PW-M,284); d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(...mute);
+    d.text('Din Sanitärpartner · Schönmattstrasse 21 · 4153 Reinach BL · '+CONFIG.mailTo,M,289);
+    d.text('Ref. '+ref,PW-M,289,{align:'right'});
+  };
+  const cap='Beispielvisualisierung – Ihr Bad wird individuell nach der Aufnahme vor Ort geplant.';
+  if(real){
+    const h=Math.min(IW*real.h/real.w,282-y-8);
+    const w=h*real.w/real.h;
+    d.addImage(real.url,"JPEG",M,y,w,h); y+=h+4;
+    d.setFontSize(8);d.setTextColor(...mute);d.text(cap,M,y);
+  }
+  foot(); d.addPage(); y=22;
+  d.setFont('helvetica','bold');d.setFontSize(12);d.setTextColor(...ink);d.text('Weitere Ansicht Ihres Wunschbads',M,y); y+=5;
+  if(real2){
+    const h=Math.min(IW*real2.h/real2.w,120), w=h*real2.w/real2.h;
+    d.addImage(real2.url,"JPEG",M,y,w,h); y+=h+10;
+  }
+  if(shots){
+    const w=(IW-4)/2, h=w*900/1400;
+    d.setFont('helvetica','bold');d.setFontSize(12);d.setTextColor(...ink);d.text('3D-Ansicht Ihres Wunschbads',M,y+2); y+=6;
+    d.addImage(shots[0],'JPEG',M,y,w,h); d.addImage(shots[1],'JPEG',M+w+4,y,w,h); y+=h+5;
+  }
+  // 3D-Link
+  d.setFont('helvetica','normal');d.setFontSize(10);d.setTextColor(...ink);
+  d.text('Interaktive 3D-Ansicht (drehbar) öffnen:',M,y);
+  d.setTextColor(30,90,200); d.textWithLink(deepLink(),M,y+6,{url:deepLink()}); y+=14;
+  // Hinweis
+  d.setTextColor(...mute);d.setFontSize(9);
+  d.text(d.splitTextToSize('Dies ist eine unverbindliche Konfiguration. Wir melden uns innert 24 Stunden und erstellen Ihre persönliche Fixpreis-Offerte nach der Aufnahme vor Ort. Die Darstellungen sind Beispiele und keine verbindliche Planung.',IW),M,y);
+  // Fusszeile
+  foot();
+  return {ref, uri:d.output('datauristring',{filename:'x.pdf'}), name:'Badkonfiguration-'+ref+'.pdf'};
+}
+
+/* Interne Anfrage-Mail (klar gegliedert) */
+function buildMessage(p, ref, hasPdf){
+  const n=new Date(), when=n.toLocaleDateString('de-CH')+', '+n.toLocaleTimeString('de-CH',{hour:'2-digit',minute:'2-digit'});
+  return [
+    'Neue Badanfrage',
+    '',
+    'Name: '+p.name,
+    'Telefon: '+p.phone,
+    'E-Mail: '+p.email,
+    'Ort: '+(p.plz||'–'),
+    '',
+    'Badgrösse: '+p.badgroesse,
+    'Dusche: '+p.dusche,
+    'Platten: '+p.platten,
+    '',
+    '3D-Ansicht: '+p.link_3d,
+    hasPdf?'Konfigurationsblatt (PDF): im Anhang':'',
+    '',
+    'Eingang: '+when+(ref?' · Ref. '+ref:'')
+  ].join('\n');
+}
+
+/* Gespeicherte Konfiguration aus dem Link laden */
+window.addEventListener('DOMContentLoaded',()=>{
+  const m=/^#bad=([0-3])([0-3])([0-3])$/.exec(location.hash); if(!m) return;
+  ['size','shower','tile'].forEach((k,i)=>{
+    const b=document.querySelector('.opt[data-k="'+k+'"][data-v="'+m[i+1]+'"]'); if(!b) return;
+    b.classList.add('sel'); state[k]={v:+b.dataset.v,l:b.dataset.l};
+    if(window.__bad3d) window.__bad3d.set(k,+b.dataset.v);
+  });
+  show(1); setTimeout(()=>document.getElementById('offerte').scrollIntoView(),300);
+});
 const steps = [...document.querySelectorAll('[data-step]')];
 const bars = [...document.querySelectorAll('#prog i')];
 const back = document.getElementById('back');
@@ -770,17 +906,25 @@ document.getElementById('leadForm').addEventListener('submit', async e => {
     err.style.display = 'block'; return;
   }
   err.style.display = 'none';
+  const link = deepLink();
   const payload = {
     name, phone, email, plz: f.plz.value.trim(),
     badgroesse: state.size.l, dusche: state.shower.l, platten: state.tile.l,
+    link_3d: link,
     quelle: 'Landingpage Konfigurator'
   };
+  const sbtn = f.querySelector('button[type=submit]'); sbtn.disabled = true;
+  let pdf = null;
+  try{ pdf = await buildPdf(payload); }catch(_){}
+  const msg = buildMessage(payload, pdf ? pdf.ref : '', !!pdf);
+  const subject = 'Neue Badanfrage – ' + name + (payload.plz ? ' – ' + payload.plz : '');
   try{
     if(CONFIG.endpoint){
-      await fetch(CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});
+      const out = {subject, from_name:'Webseite Din Sanitärpartner', ...payload, message: msg};
+      if(pdf){ out.pdf_anhang = pdf.uri; out.pdf_name = pdf.name; }
+      await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(out)});
     } else {
-      const body = Object.entries(payload).map(([k,v]) => k+': '+v).join('\n');
-      window.open('mailto:'+CONFIG.mailTo+'?subject='+encodeURIComponent('Offerte Badrenovierung')+'&body='+encodeURIComponent(body));
+      window.open('mailto:'+CONFIG.mailTo+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(msg));
     }
   }catch(_){}
   document.getElementById('rName').textContent = name.split(' ')[0];
