@@ -842,7 +842,7 @@ async function buildPdf(p){
   d.text(d.splitTextToSize('Dies ist eine unverbindliche Konfiguration. Wir melden uns innert 24 Stunden und erstellen Ihre persönliche Fixpreis-Offerte nach der Aufnahme vor Ort. Die Darstellungen sind Beispiele und keine verbindliche Planung.',IW),M,y);
   // Fusszeile
   foot();
-  return {ref, uri:d.output('datauristring',{filename:'x.pdf'}), name:'Badkonfiguration-'+ref+'.pdf'};
+  return {ref, uri:d.output('datauristring',{filename:'x.pdf'}), name:'Bad-Konfigurator_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+'.pdf'};
 }
 
 /* Interne Anfrage-Mail (klar gegliedert) */
@@ -860,7 +860,6 @@ function buildMessage(p, ref, hasPdf){
     'Dusche: '+p.dusche,
     'Platten: '+p.platten,
     '',
-    '3D-Ansicht: '+p.link_3d,
     hasPdf?'Konfigurationsblatt (PDF): im Anhang':'',
     '',
     'Eingang: '+when+(ref?' · Ref. '+ref:'')
