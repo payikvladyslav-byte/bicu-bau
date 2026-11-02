@@ -921,6 +921,7 @@ document.getElementById('leadForm').addEventListener('submit', async e => {
     if(CONFIG.endpoint){
       const out = {subject, from_name:'Webseite Din Sanitärpartner', ...payload, message: msg};
       if(pdf){ out.pdf_anhang = pdf.uri; out.pdf_name = pdf.name; }
+      const lg = document.querySelector('.logo img'); if(lg && lg.src.indexOf('data:image/png;base64,') === 0) out.logo = lg.src;
       await fetch(CONFIG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(out)});
     } else {
       window.open('mailto:'+CONFIG.mailTo+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(msg));
